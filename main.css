@@ -98,6 +98,11 @@ section {
   border-left: 2px solid hsla(211, 10%, 45%, 0.1);
 }
 
+.replying-to_text {
+  color: var(--clr-primary-mblue);
+  font-weight: 700;
+}
+
 .comment--reply {
   grid-column: 2 / 3;
 }

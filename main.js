@@ -36,9 +36,6 @@ function createAllComments(jsonObject) {
 
 function createComment(jsonComment) {
   const comment = document.createElement('li');
-  if (jsonComment.replyingTo !== undefined) {
-    comment.classList.add('comment--reply')
-  }
   comment.classList.add('comment');
   comment.classList.add('bg-white');
   comment.id = jsonComment.id;
@@ -47,6 +44,15 @@ function createComment(jsonComment) {
   comment.appendChild(createCommentAvatar(jsonComment));
   comment.appendChild(createCommentText(jsonComment));
   comment.appendChild(createCommentReply(jsonComment));
+
+  if (jsonComment.replyingTo !== undefined) {
+    comment.classList.add('comment--reply')
+    text = comment.querySelector('.comment_text p');
+    replySpan = document.createElement('span');
+    replySpan.classList.add('replying-to_text')
+    replySpan.textContent = `@${jsonComment.replyingTo} `;
+    text.prepend(replySpan);
+  }
 
   return comment;
 }
