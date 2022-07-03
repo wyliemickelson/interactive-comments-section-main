@@ -9,13 +9,25 @@ fetch('data.json').then(function (response) {
 
 function createAllComments(jsonObject) {
   let comments = jsonObject;
+  let commentContainer = document.getElementById('comment-list');
   if (Array.isArray(jsonObject.comments)) {
     comments = jsonObject.comments;
+  } else {
+    replyCont = document.createElement('div');
+    replyCont.classList.add('reply_container');
+    replyCont.id = "reply_cont" + jsonObject[0].replyingTo;
+    commentContainer.appendChild(replyCont);
+    
+    commentContainer = document.getElementById("reply_cont" + jsonObject[0].replyingTo);
   }
-  const commentList = document.getElementById('comment-list');
   comments.forEach(function(jsonComment) {
+    if (!Array.isArray(jsonObject.comments)) {
+      vertLine = document.createElement('div');
+      vertLine.classList.add('reply_vertical_line');
+      commentContainer.appendChild(vertLine);
+    }
     let comment = createComment(jsonComment);
-    commentList.appendChild(comment);
+    commentContainer.appendChild(comment);
     if (Array.isArray(jsonComment.replies) && jsonComment.replies.length != 0) {
       createAllComments(jsonComment.replies);
     }
@@ -24,8 +36,12 @@ function createAllComments(jsonObject) {
 
 function createComment(jsonComment) {
   const comment = document.createElement('li');
+  if (jsonComment.replyingTo !== undefined) {
+    comment.classList.add('comment--reply')
+  }
   comment.classList.add('comment');
   comment.classList.add('bg-white');
+  comment.id = jsonComment.id;
 
   comment.appendChild(createCommentVoter(jsonComment));
   comment.appendChild(createCommentAvatar(jsonComment));

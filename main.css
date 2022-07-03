@@ -70,6 +70,11 @@ section {
   margin-bottom: 1rem;
 }
 
+.comment-list > * + *,
+.comment + * {
+  margin-top: 1rem;
+}
+
 .comment {
   display: grid;
   grid-row-gap: 0.5rem;
@@ -77,6 +82,24 @@ section {
   border-radius: .5rem;
   padding: 1rem;
   font-weight: 400;
+}
+
+.reply_container {
+  display: grid;
+  grid-row-gap: 1rem;
+  grid-template-columns: 1fr 9fr;
+  justify-content: center;
+}
+
+.reply_vertical_line {
+  margin: 0 auto;
+  text-align: right;
+  width: 1px;
+  border-left: 2px solid hsla(211, 10%, 45%, 0.1);
+}
+
+.comment--reply {
+  grid-column: 2 / 3;
 }
 
 .comment_avatar {
