@@ -39,6 +39,11 @@ button {
   padding: 0;
 }
 
+button {
+  background-color: white;
+  border: none;
+}
+
 h2 {
   font-size: 1.15rem;
   color: var(--clr-neutral-db);
@@ -90,9 +95,13 @@ section {
   justify-content: flex-end;
   align-items: center;
   color: var(--clr-primary-mblue);
-  font-weight: 500;
   gap: .5rem;
   grid-area: 4 / 5 / 5 / 7;
+}
+
+.comment_reply p {
+  font-family: var(--ff-primary);
+  font-weight: 500;
 }
 
 .comment_text {
@@ -106,11 +115,12 @@ section {
   justify-content: center;
   align-items: center;
   background-color: var(--clr-neutral-lgr);
-  grid-area: 4 / 1 / 5 / 3;
+  grid-area: 4 / 1 / 5 / 5;
 }
 
 .comment_voter--icon {
   padding: 1rem;
+  background-color: var(--clr-neutral-lgr);
   background-repeat: no-repeat;
   background-position: center center;
   border: none;
