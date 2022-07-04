@@ -72,7 +72,8 @@ section {
 }
 
 .comment-list > * + *,
-.comment + * {
+.comment + *,
+.reply_container > * + * {
   margin-top: 1rem;
 }
 
@@ -87,7 +88,7 @@ section {
 
 .reply_container {
   display: grid;
-  grid-row-gap: 1rem;
+  /* grid-row-gap: 1rem; */
   grid-template-columns: 1fr 9fr;
   justify-content: center;
 }
@@ -143,8 +144,9 @@ section {
   font-weight: 500;
 }
 
-.comment_edit {
-  
+.reply-section {
+  grid-column: 2 / 3;
+  margin-inline: 0;
 }
 
 .comment_del {
@@ -153,6 +155,10 @@ section {
 
 .comment_text {
   grid-column: 1 / 7; 
+}
+
+.comment_text p {
+  overflow-wrap: break-word;
 }
 
 .comment_voter {

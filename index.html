@@ -20,81 +20,14 @@
   <div class="container">
     <section>
       <ol class="comment-list" id="comment-list">
-        <!-- <li class="comment bg-white">
-          <div class="comment_voter">
-            <button class="comment_voter--icon vote--up"></button>
-            <p class="comment_voter--count">12</p>
-            <button class="comment_voter--icon vote--down"></button>
-          </div>
-          <div class="comment_avatar">
-            <img class="comment_avatar--img" src="images/avatars/image-amyrobson.webp">
-            <h2>amyrobson</h2>
-            <p>1 month ago</p>
-          </div>
-          <div class="comment_text">
-            <p>Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've
-              nailed the design and the responsiveness at various breakpoints works really well.</p>
-          </div>
-          <button class="comment_reply">
-            <img src="images/icon-reply.svg">
-            <p>Reply</p>
-          </button>
-        </li> -->
-
-        <!-- testing purposes -->
-        <!-- <div class="reply_container">
-          <div class="reply_vertical_line"></div>
-          <li class="comment comment--reply bg-white">
-            <div class="comment_voter">
-              <button class="comment_voter--icon vote--up"></button>
-              <p class="comment_voter--count">12</p>
-              <button class="comment_voter--icon vote--down"></button>
-            </div>
-            <div class="comment_avatar">
-              <img class="comment_avatar--img" src="images/avatars/image-amyrobson.webp">
-              <h2>amyrobson</h2>
-              <p>1 month ago</p>
-            </div>
-            <div class="comment_text">
-              <p>Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've
-                nailed the design and the responsiveness at various breakpoints works really well.</p>
-            </div>
-            <button class="comment_reply">
-              <img src="images/icon-reply.svg">
-              <p>Reply</p>
-            </button>
-          </li>
-          <div class="reply_vertical_line"></div>
-          <li class="comment comment--reply bg-white">
-            <div class="comment_voter">
-              <button class="comment_voter--icon vote--up"></button>
-              <p class="comment_voter--count">12</p>
-              <button class="comment_voter--icon vote--down"></button>
-            </div>
-            <div class="comment_avatar">
-              <img class="comment_avatar--img" src="images/avatars/image-amyrobson.webp">
-              <h2>amyrobson</h2>
-              <p>1 month ago</p>
-            </div>
-            <div class="comment_text">
-              <p>Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've
-                nailed the design and the responsiveness at various breakpoints works really well.</p>
-            </div>
-            <button class="comment_reply">
-              <img src="images/icon-reply.svg">
-              <p>Reply</p>
-            </button>
-          </li>
-        </div> -->
-        <!-- testing purposes -->
       </ol>
     </section>
     <!-- Pull dynamic content from the data.json file -->
 
-    <section class="create-comment bg-white">
+    <section id="newCommentSection" class="create-comment bg-white">
       <img class="create-comment_img" src="images/avatars/image-juliusomo.webp">
-      <textarea placeholder="Add a comment..." class="create-comment_input"></textarea>
-      <button class="create-comment_btn"><p>SEND</p></button>
+      <textarea id="newCommentInput" placeholder="Add a comment..." class="create-comment_input"></textarea>
+      <button id="newCommentBtn" class="create-comment_btn"><p id="newCommentBtnText">SEND</p></button>
     </section>
   </div>
 </body>

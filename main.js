@@ -7,8 +7,10 @@ fetch('data.json').then(function (response) {
   console.error(error);
 })
 
+let currentUser = null;
+
 class Comment {
-  constructor(id, content, createdAt, score, user, replies = [], replyingTo = null) {
+  constructor(id, content, createdAt, score, user, replies = [], replyingTo = undefined) {
     this.id = id;
     this.content = content;
     this.createdAt = createdAt;
@@ -18,18 +20,22 @@ class Comment {
     this.replyingTo = replyingTo;
   }
 
-  getId() { return this.id; }
-  getContent() { return this.content; }
-  getCreatedAt() { return this.createdAt; }
-  getScore() { return this.score; }
-  getUser() { return this.user; }
-  getReplies() { return this.replies; }
-  getReplyingTo() {return this.replyingTo; }
+  id() { return this.id; }
+  content() { return this.content; }
+  createdAt() { return this.createdAt; }
+  score() { return this.score; }
+  user() { return this.user; }
+  replies() { return this.replies; }
+  replyingTo() {return this.replyingTo; }
+
+  toString() {
+    return JSON.stringify(self);
+  }
 }
 
-function createAllComments(jsonObject, currUser = null) {
-  if (currUser == null) {
-    currUser = jsonObject.currentUser.username;
+function createAllComments(jsonObject) {
+  if (currentUser == null) {
+    currentUser = jsonObject.currentUser;
   }
   let comments = jsonObject;
   let commentContainer = document.getElementById('comment-list');
@@ -44,30 +50,15 @@ function createAllComments(jsonObject, currUser = null) {
     commentContainer = document.getElementById("reply_cont" + jsonObject[0].replyingTo);
   }
   comments.forEach(function(jsonComment) {
-    if (!Array.isArray(jsonObject.comments)) {
+    if (!Array.isArray(jsonObject.replies)) {
       vertLine = document.createElement('div');
       vertLine.classList.add('reply_vertical_line');
       commentContainer.appendChild(vertLine);
     }
     let comment = createComment(jsonComment);
-    console.log(jsonComment.user.username);
-    console.log(currUser);
-    console.log(jsonComment.user.username == currUser);
-    if (jsonComment.user.username == currUser) {
-      comment.removeChild(comment.querySelector('.comment_reply'));
-      btnDiv = document.createElement('div');
-      btnDiv.classList.add('btn-container');
-      btnDiv.appendChild(createCommentDel());
-      btnDiv.appendChild(createCommentEdit());
-      comment.appendChild(btnDiv);
-      currentUserTag = document.createElement('p');
-      currentUserTag.classList.add('current-user_tag');
-      currentUserTag.textContent = 'you';
-      comment.querySelector('.comment_avatar h2').after(currentUserTag);
-    }
     commentContainer.appendChild(comment);
     if (Array.isArray(jsonComment.replies) && jsonComment.replies.length != 0) {
-      createAllComments(jsonComment.replies, currUser);
+      createAllComments(jsonComment.replies);
     }
   });
 }
@@ -82,6 +73,19 @@ function createComment(jsonComment) {
   comment.appendChild(createCommentAvatar(jsonComment));
   comment.appendChild(createCommentText(jsonComment));
   comment.appendChild(createCommentReply(jsonComment));
+
+  if (jsonComment.user.username == currentUser.username) {
+    comment.removeChild(comment.querySelector('.comment_reply'));
+    btnDiv = document.createElement('div');
+    btnDiv.classList.add('btn-container');
+    btnDiv.appendChild(createCommentDel());
+    btnDiv.appendChild(createCommentEdit());
+    comment.appendChild(btnDiv);
+    currentUserTag = document.createElement('p');
+    currentUserTag.classList.add('current-user_tag');
+    currentUserTag.textContent = 'you';
+    comment.querySelector('.comment_avatar h2').after(currentUserTag);
+  }
 
   if (jsonComment.replyingTo !== undefined) {
     comment.classList.add('comment--reply')
@@ -168,6 +172,8 @@ function createCommentReply(jsonObject) {
   replyBtn.appendChild(replyIcon);
   replyBtn.appendChild(replyText);
 
+  replyBtn.addEventListener('click', replyComment);
+
   return replyBtn;
 }
 
@@ -202,5 +208,44 @@ function createCommentDel(jsonObject) {
   delBtn.appendChild(delIcon);
   delBtn.appendChild(delText);
 
+  delBtn.addEventListener('click', delComment);
+
   return delBtn;
+}
+
+function addComment() {
+  let text = document.getElementById('newCommentInput');
+  if (text.value != "") {
+    c = new Comment('5', text.value, 'now', '0', currentUser);
+    domComment = createComment(c);
+    document.getElementById('comment-list').appendChild(domComment);
+    text.value = "";
+  }
+}
+
+function delComment(btn) {
+  comment = this.parentElement.parentElement;
+  comment.remove();
+}
+
+function replyComment() {
+  replySection = document.getElementById('newCommentSection');
+  newReplySection = replySection.cloneNode(true);
+  newReplySection.classList.add('reply-section');
+  newReplySection.id = 'newReplySection';
+  newReplySection.querySelector('#newCommentInput').removeAttribute('id');
+  newReplySection.querySelector('#newCommentBtnText').textContent = "REPLY";
+  this.parentElement.after(newReplySection);
+}
+
+window.onload = function() {
+  let newComment = document.getElementById("newCommentBtn");
+  let text = document.getElementById('newCommentInput')
+  newComment.addEventListener("click", addComment);
+  text.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      newComment.click();
+    }
+  })
 }
