@@ -172,7 +172,7 @@ function createCommentReply(jsonObject) {
   replyBtn.appendChild(replyIcon);
   replyBtn.appendChild(replyText);
 
-  replyBtn.addEventListener('click', replyComment);
+  replyBtn.addEventListener('click', replySection);
 
   return replyBtn;
 }
@@ -213,6 +213,19 @@ function createCommentDel(jsonObject) {
   return delBtn;
 }
 
+function addReply(replyingToName, obj) {
+  let text = document.getElementById('newReplyInput');
+  textC = text.value;
+  if (textC != "") {
+    textC = textC.replace(`@${replyingToName}, `, '');
+    c = new Comment('5', textC, 'now', '0', currentUser, [], replyingToName);
+    domComment = createComment(c);
+    document.getElementById('comment-list').appendChild(domComment);
+    textC = "";
+    obj.parentElement.remove();
+  }
+}
+
 function addComment() {
   let text = document.getElementById('newCommentInput');
   if (text.value != "") {
@@ -228,7 +241,7 @@ function delComment(btn) {
   comment.remove();
 }
 
-function replyComment() {
+function replySection() {
   oldReplySection = document.getElementById('newReplySection');
   if (oldReplySection) {
     oldReplySection.remove();
@@ -237,8 +250,26 @@ function replyComment() {
   newReplySection = replySection.cloneNode(true);
   newReplySection.classList.add('reply-section');
   newReplySection.id = 'newReplySection';
-  newReplySection.querySelector('#newCommentInput').removeAttribute('id');
+  newReplySection.querySelector('#newCommentInput').id = 'newReplyInput';
+  newReplySection.querySelector('#newCommentBtn').id = 'newReplyBtn';
   newReplySection.querySelector('#newCommentBtnText').textContent = "REPLY";
+
+  newReplyBtn = newReplySection.querySelector('#newReplyBtn');
+
+  let text = newReplySection.querySelector('#newReplyInput');
+  let replyingToName = this.parentElement.querySelector('.comment_avatar h2').textContent;
+  text.value = `@${replyingToName}, `;
+
+  newReplyBtn.addEventListener('click', function() {
+    addReply(replyingToName, this);
+  })
+  text.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      newReplyBtn.click();
+    }
+  })
+
   this.parentElement.after(newReplySection);
 }
 
