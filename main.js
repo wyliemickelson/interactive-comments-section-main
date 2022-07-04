@@ -7,7 +7,10 @@ fetch('data.json').then(function (response) {
   console.error(error);
 })
 
-function createAllComments(jsonObject) {
+function createAllComments(jsonObject, currUser = null) {
+  if (currUser == null) {
+    currUser = jsonObject.currentUser.username;
+  }
   let comments = jsonObject;
   let commentContainer = document.getElementById('comment-list');
   if (Array.isArray(jsonObject.comments)) {
@@ -27,9 +30,20 @@ function createAllComments(jsonObject) {
       commentContainer.appendChild(vertLine);
     }
     let comment = createComment(jsonComment);
+    console.log(jsonComment.user.username);
+    console.log(currUser);
+    console.log(jsonComment.user.username == currUser);
+    if (jsonComment.user.username == currUser) {
+      comment.removeChild(comment.querySelector('.comment_reply'));
+      btnDiv = document.createElement('div');
+      btnDiv.classList.add('btn-container');
+      btnDiv.appendChild(createCommentDel());
+      btnDiv.appendChild(createCommentEdit());
+      comment.appendChild(btnDiv);
+    }
     commentContainer.appendChild(comment);
     if (Array.isArray(jsonComment.replies) && jsonComment.replies.length != 0) {
-      createAllComments(jsonComment.replies);
+      createAllComments(jsonComment.replies, currUser);
     }
   });
 }
@@ -82,7 +96,6 @@ function createCommentVoter(jsonObject) {
 }
 
 function createCommentAvatar(jsonObject) {
-  console.log(jsonObject);
   const commentAvatar = document.createElement('div');
   commentAvatar.classList.add('comment_avatar');
 
@@ -119,6 +132,7 @@ function createCommentText(jsonObject) {
 function createCommentReply(jsonObject) {
   const replyBtn = document.createElement('button');
   replyBtn.classList.add('comment_reply');
+  replyBtn.classList.add('comment_btn');
 
   const replyIcon = document.createElement('img');
   replyIcon.src = 'images/icon-reply.svg';
@@ -130,4 +144,38 @@ function createCommentReply(jsonObject) {
   replyBtn.appendChild(replyText);
 
   return replyBtn;
+}
+
+function createCommentEdit(jsonObject) {
+  const editBtn = document.createElement('button');
+  editBtn.classList.add('comment_edit');
+  editBtn.classList.add('comment_btn');
+  
+  const editIcon = document.createElement('img');
+  editIcon.src = 'images/icon-edit.svg';
+
+  const editText = document.createElement('p');
+  editText.textContent = 'Edit';
+
+  editBtn.appendChild(editIcon);
+  editBtn.appendChild(editText);
+
+  return editBtn;
+}
+
+function createCommentDel(jsonObject) {
+  const delBtn = document.createElement('button');
+  delBtn.classList.add('comment_del');
+  delBtn.classList.add('comment_btn');
+  
+  const delIcon = document.createElement('img');
+  delIcon.src = 'images/icon-delete.svg';
+
+  const delText = document.createElement('p');
+  delText.textContent = 'Delete';
+
+  delBtn.appendChild(delIcon);
+  delBtn.appendChild(delText);
+
+  return delBtn;
 }
