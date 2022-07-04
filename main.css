@@ -46,7 +46,7 @@ button {
 }
 
 h2 {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: var(--clr-neutral-db);
 }
 
@@ -201,6 +201,21 @@ section {
   font-weight: 400;
   border-radius: 0.5rem;
   padding: 0.5rem;
+}
+
+button:hover {
+  opacity: 50%;
+  cursor: pointer;
+}
+
+textarea:hover {
+  border-color: var(--clr-primary-mblue);
+  cursor: pointer;
+}
+
+textarea:focus {
+  border: 2px solid var(--clr-primary-mblue);
+  outline: none;
 }
 
 
