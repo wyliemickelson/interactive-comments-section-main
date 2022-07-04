@@ -79,6 +79,7 @@ section {
 
 .comment {
   display: grid;
+  min-height: 6rem;
   grid-row-gap: 0.5rem;
   grid-template-columns: repeat(6, 1fr);
   border-radius: .5rem;

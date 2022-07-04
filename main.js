@@ -220,8 +220,28 @@ function addReply(replyingToName, obj) {
     textC = textC.replace(`@${replyingToName}, `, '');
     c = new Comment('5', textC, 'now', '0', currentUser, [], replyingToName);
     domComment = createComment(c);
-    document.getElementById('comment-list').appendChild(domComment);
+
     textC = "";
+    currReplyCont = obj.parentElement.nextSibling;
+
+    vertLine = document.createElement('div');
+    vertLine.classList.add('reply_vertical_line');
+
+    if (Array.from(currReplyCont.classList).includes('reply_container')) {
+      currReplyCont.appendChild(vertLine);
+      currReplyCont.appendChild(domComment);
+    } else if (Array.from(obj.parentElement.parentElement.classList).includes('reply_container')) {
+      currReplyCont = obj.parentElement.parentElement;
+      currReplyCont.appendChild(vertLine);
+      currReplyCont.appendChild(domComment);
+    } else {
+      currReplyCont = document.createElement('div');
+      currReplyCont.classList.add('reply_container');
+      currReplyCont.appendChild(vertLine);
+      currReplyCont.appendChild(domComment);
+      let replyTo = obj.parentElement.previousSibling;
+      replyTo.after(currReplyCont);
+    }
     obj.parentElement.remove();
   }
 }
