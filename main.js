@@ -229,6 +229,10 @@ function delComment(btn) {
 }
 
 function replyComment() {
+  oldReplySection = document.getElementById('newReplySection');
+  if (oldReplySection) {
+    oldReplySection.remove();
+  }
   replySection = document.getElementById('newCommentSection');
   newReplySection = replySection.cloneNode(true);
   newReplySection.classList.add('reply-section');
