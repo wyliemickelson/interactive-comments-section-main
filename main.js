@@ -223,6 +223,9 @@ function addReply(replyingToName, obj) {
 
     textC = "";
     currReplyCont = obj.parentElement.nextSibling;
+    if (!currReplyCont) {
+      currReplyCont = obj.parentElement;
+    }
 
     vertLine = document.createElement('div');
     vertLine.classList.add('reply_vertical_line');
@@ -256,8 +259,19 @@ function addComment() {
   }
 }
 
-function delComment(btn) {
-  comment = this.parentElement.parentElement;
+function delComment() {
+  let comment = this.parentElement.parentElement;
+  prevSibling = comment.previousSibling;
+  if (Array.from(prevSibling.classList).includes('reply_vertical_line')) {
+    prevSibling.remove();
+  }
+  let cont = comment.parentElement;
+  console.log(cont);
+  console.log(cont.childNodes.length);
+  if (cont.childNodes.length <= 1 && Array.from(cont.classList).includes('reply_container')) {
+    cont.remove();
+  }
+
   comment.remove();
 }
 
@@ -302,5 +316,9 @@ window.onload = function() {
       event.preventDefault();
       newComment.click();
     }
+  })
+  let lines = document.querySelectorAll('.comment-list > .reply_vertical_line');
+  Array.from(lines).forEach(function(line) {
+    line.remove();
   })
 }
