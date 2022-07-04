@@ -7,6 +7,26 @@ fetch('data.json').then(function (response) {
   console.error(error);
 })
 
+class Comment {
+  constructor(id, content, createdAt, score, user, replies = [], replyingTo = null) {
+    this.id = id;
+    this.content = content;
+    this.createdAt = createdAt;
+    this.score = score;
+    this.user = user;
+    this.replies = replies;
+    this.replyingTo = replyingTo;
+  }
+
+  getId() { return this.id; }
+  getContent() { return this.content; }
+  getCreatedAt() { return this.createdAt; }
+  getScore() { return this.score; }
+  getUser() { return this.user; }
+  getReplies() { return this.replies; }
+  getReplyingTo() {return this.replyingTo; }
+}
+
 function createAllComments(jsonObject, currUser = null) {
   if (currUser == null) {
     currUser = jsonObject.currentUser.username;
@@ -40,6 +60,10 @@ function createAllComments(jsonObject, currUser = null) {
       btnDiv.appendChild(createCommentDel());
       btnDiv.appendChild(createCommentEdit());
       comment.appendChild(btnDiv);
+      currentUserTag = document.createElement('p');
+      currentUserTag.classList.add('current-user_tag');
+      currentUserTag.textContent = 'you';
+      comment.querySelector('.comment_avatar h2').after(currentUserTag);
     }
     commentContainer.appendChild(comment);
     if (Array.isArray(jsonComment.replies) && jsonComment.replies.length != 0) {
@@ -112,6 +136,7 @@ function createCommentAvatar(jsonObject) {
 
   commentAvatar.appendChild(avatar_img);
   commentAvatar.appendChild(avatar_userName);
+
   commentAvatar.appendChild(creationTime);
 
   return commentAvatar;
