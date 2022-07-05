@@ -191,6 +191,8 @@ function createCommentEdit(jsonObject) {
   editBtn.appendChild(editIcon);
   editBtn.appendChild(editText);
 
+  editBtn.addEventListener('click', editComment);
+
   return editBtn;
 }
 
@@ -305,6 +307,36 @@ function replySection() {
   })
 
   this.parentElement.after(newReplySection);
+}
+
+function editComment() {
+  let comment = this.parentElement.parentElement;
+  let text = comment.querySelector('.comment_text p');
+  let editArea;
+  if (text) {
+    editArea = document.createElement('textarea');
+    editArea.classList.add('comment-edit-input');
+    editArea.value = text.textContent;
+    comment.querySelector('.comment_text p').replaceWith(editArea);
+  } else {
+    editArea = comment.querySelector('.comment_text textarea');
+    editAreaTextValue = editArea.value;
+    console.log(editAreaTextValue);
+    if (editAreaTextValue.charAt(0) == '@') {
+      let space = editAreaTextValue.indexOf(' ');
+      let replyingTo = editAreaTextValue.slice(0, space);
+      text = document.createElement('p');
+
+      text.textContent = editAreaTextValue.slice(space, -1);
+      text.prepend(replySpan);
+
+      replySpan = document.createElement('span');
+      replySpan.classList.add('replying-to_text')
+      replySpan.textContent = replyingTo;
+
+      editArea.replaceWith(text);
+    }
+  }
 }
 
 window.onload = function() {
