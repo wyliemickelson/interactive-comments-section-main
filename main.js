@@ -106,10 +106,12 @@ function createCommentVoter(jsonObject) {
   const upvoteBtn = document.createElement('button');
   upvoteBtn.classList.add('comment_voter--icon');
   upvoteBtn.classList.add('vote--up');
+  upvoteBtn.addEventListener('click', voteIncrease);
 
   const downVoteBtn = document.createElement('button');
   downVoteBtn.classList.add('comment_voter--icon');
   downVoteBtn.classList.add('vote--down')
+  downVoteBtn.addEventListener('click', voteDecrease);
 
   const counter = jsonObject.score;
   const voteCount = document.createElement('p');
@@ -309,6 +311,16 @@ function replySection() {
   this.parentElement.after(newReplySection);
 }
 
+function voteIncrease() {
+  let voteCount = Number(this.parentElement.querySelector('p').textContent);
+  this.parentElement.querySelector('p').textContent = ++voteCount;
+}
+
+function voteDecrease() {
+  let voteCount = Number(this.parentElement.querySelector('p').textContent);
+  this.parentElement.querySelector('p').textContent = --voteCount;
+}
+
 function editComment() {
   let comment = this.parentElement.parentElement;
   let text = comment.querySelector('.comment_text p');
@@ -327,7 +339,7 @@ function editComment() {
       let replyingTo = editAreaTextValue.slice(0, space);
       text = document.createElement('p');
 
-      text.textContent = editAreaTextValue.slice(space, -1);
+      text.textContent = editAreaTextValue.slice(space);
       text.prepend(replySpan);
 
       replySpan = document.createElement('span');
